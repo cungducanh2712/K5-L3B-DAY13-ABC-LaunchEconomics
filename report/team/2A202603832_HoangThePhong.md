@@ -27,7 +27,8 @@ Copy file này và đổi tên theo quy tắc `MSSV_HoTen.md`. Giữ nguyên fil
   - Đề xuất thêm 2 chỉ số mới (Chỉ số dùng: % yêu cầu nhóm can thiệp được mở xem gợi ý trợ lý; Chỉ số an toàn: % đơn hoàn sai tiền qua kiểm tra mẫu hằng tuần).
   - Đặc tả danh sách 10 event có `trace_id` và kiểm tra chéo 100% các chỉ số đều đo được từ log event.
 - **Nhiệm vụ E2 (Rủi ro kinh tế):**
-  - Lấy số liệu từ bảng độ nhạy CP2 để lập 3 kịch bản rủi ro: Làm lại x2 (+51,8% lên 6.787 đ, `simulated`), Xem lại 100% kéo dài (11.743 đ = 0,98× hoặc 12.414 đ = 1,03×, `simulated`), Khối lượng thấp hơn dự kiến (chi phí cố định 40tr/tháng tăng lên +2.370 đ/việc, tổng 5.784 đ = 0,48×, `simulated`). Gán người phụ trách là một vai trò cụ thể.
+  - Lấy số liệu từ bảng độ nhạy CP2 để lập các kịch bản rủi ro: Làm lại x2 (+51,8% lên 6.787 đ, `simulated`), Xem lại 100% kéo dài (11.743 đ = 0,98× hoặc 12.414 đ = 1,03×, `simulated`).
+  - Phân tích sâu rủi ro chi phí cố định phân bổ cao khi quy mô sử dụng nhỏ ở giai đoạn đầu Pilot (bước rollout 0.10 chỉ 4 NV khiến phần cố định 40tr/tháng đội lên +11.852 đ/việc, đẩy *fully loaded cost* vượt 15.000 đ > 8.000 đ); làm rõ nguyên tắc đánh giá: **không kết luận** Agent có chi phí biến đổi cao chỉ vì *fully loaded cost* vượt 8.000 đ ở đầu Pilot, vì chi phí biến đổi thực tế chỉ 2.696 đ (`noi_dia`) và 8.221 đ (`hang_nang`), và khi đạt quy mô đầy đủ phần cố định chỉ còn +1.185 đ/việc (tổng 4.599 đ = 0,38×, `simulated`). Gán người phụ trách là một vai trò cụ thể.
 - **Nhiệm vụ C (Gắn nhãn lỗi độc lập):**
   - Gắn nhãn độc lập 20 ca lỗi vào cột `Nhãn người 2` trong `bang_loi.md`, đối chiếu cùng TV3 đạt đồng thuận tuyệt đối 20/20 ca (100%).
 - **Nhiệm vụ E3 (Hồ sơ Launch v0):**
