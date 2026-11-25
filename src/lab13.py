@@ -193,6 +193,9 @@ if __name__ == '__main__':
     print(f'c) 20 nhan vien/nhom (c/ICC):    toi da {cap_20_nv:,} < {n_req:,} (khong dat 5 diem)')
     print(f'd) 6 depot/nhom (c/ICC):         toi da {cap_6_depot:,} (loai)')
     print(f'e) Muc chenh 6 diem (n={n_mde6}):   m >= {m_min_20nv} yc/nguoi, DE={de_mde6:.2f}; power neu chenh 5 diem={power_5pt_at_859:.2f}')
+    yc_moi_nv_ngay = 1500 / 40
+    so_ngay_toi_thieu = math.ceil(m_min_20nv / yc_moi_nv_ngay)
+    print(f'   Luu luong 1.500 yc/ngay / 40 nv = {yc_moi_nv_ngay:.1f} yc/nv/ngay -> toi thieu {so_ngay_toi_thieu} ngay thu thap (+7 ngay theo doi mo lai)')
 
     print('\n=== D3 (Ti le mo lai trong 7 ngay hien tai) ===')
     mo_lai_all = reqs['mo_lai_trong_7_ngay'].mean()
