@@ -42,4 +42,4 @@ Copy file này và đổi tên theo quy tắc `MSSV_HoTen.md`. Giữ nguyên fil
 ## 6. Tự đánh giá
 
 - Hoàn thành đầy đủ, đúng hạn toàn bộ nhiệm vụ của TV3 (CP3) theo phân công nhóm.
-- Tuân thủ nghiêm túc quy định liêm chính của lab: gắn nhãn 20 ca độc lập trước khi đối chiếu với TV4, giữ nguyên hai bộ nhãn gốc, không dùng từ "production" và chỉ định rõ một vai trò chịu trách nhiệm cho từng biện pháp khắc phục.
+- Tuân thủ nghiêm túc quy định liêm chính của lab: gắn nhãn 20 ca độc lập trước khi đối chiếu với TV4, giữ nguyên hai bộ nhãn gốc, không dùng từ cấm (chỉ dùng pilot/chạy thử) và chỉ định rõ một vai trò chịu trách nhiệm cho từng biện pháp khắc phục.
