@@ -5,7 +5,7 @@
 - Tên nhóm: ABC
 - Lớp: H202 - K5 L3B
 - Repo nhóm: `K5-L3B-ABC-LaunchEconomics` (xem [SUBMISSION.md](SUBMISSION.md))
-- URL repo, nhánh nộp, commit chốt: `https://github.com/cungducanh2712/K5-L3B-DAY13-ABC-LaunchEconomics.git`, nhánh `tv4-launch` (hoặc `main` sau khi merge)
+- URL repo, nhánh nộp, commit chốt: 81bf2f48c2a7c36e7afdfc2a1140591ba0c8c234   `https://github.com/cungducanh2712/K5-L3B-DAY13-ABC-LaunchEconomics.git`, nhánh `tv4-launch` (hoặc `main` sau khi merge)
 
 ## Thành viên
 
