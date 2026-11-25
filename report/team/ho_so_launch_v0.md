@@ -2,7 +2,7 @@
 
 Một trang. Cột trạng thái chỉ nhận: **Xong, có bằng chứng · Chưa · Giả lập**. Mục nào dựa trên cột `_simulated` ghi Giả lập. Người phụ trách là một vai trò, không ghi "cả đội". Gate 2a chỉ duyệt kế hoạch pilot: không viết như thể trợ lý đã được duyệt chạy chính thức (xem quy tắc 5 trong `README.md`).
 
-Nhóm: ... · Lớp: L3B
+Nhóm: ABC · Lớp: L3B
 
 | Mục | Con số chính | Trạng thái | Người phụ trách |
 | --- | --- | --- | --- |
@@ -11,7 +11,7 @@ Nhóm: ... · Lớp: L3B
 | 3 · So với nhân viên tự làm | So với 12.000 đ: `noi_dia` **2.696 đ (0,22×)**, `hang_nang` **8.221 đ (0,69×)**, `doi_tac` **10.215 đ (0,85×)**, `quoc_te` **22.515 đ (1,88×)**; cả hệ thống (gồm 222 ca không thành công chuyển nhân viên × 12.000 đ) là **5.865 đ/yc (0,49×)** (`simulated`) → thu hẹp phạm vi pilot chỉ gồm `noi_dia` + `hang_nang`. | Giả lập | Giám đốc vận hành LogiX-VN |
 | 4 · Chỉ số chính, chỉ số dùng, chỉ số an toàn | Đợt chạy thử (chưa có đối chứng): Chính **82,83%** (994/1.200; phạm vi pilot 92,26%) · Dùng (bỏ qua gợi ý) **27,12%** (48/177; phạm vi pilot 21,09%) · An toàn (mở lại 7 ngày) **4,25%** (51/1.200; phạm vi pilot 3,97%); đã đặc tả 10 event có `trace_id`. | Xong, có bằng chứng | Kỹ sư trưởng agent |
 | 5 · Bảng lỗi và cách khắc phục | 20 ca lỗi được gắn nhãn độc lập (đồng thuận ≥ 80%); lập bảng khắc phục cho 5 ca đại diện đủ 5 loại với cách phát hiện đo được (ngưỡng, tần suất) và vai trò phụ trách. | Xong, có bằng chứng | Kỹ sư trưởng agent |
-| 6 · Pilot plan | Chia ngẫu nhiên theo nhân viên (20 đối chứng + 20 can thiệp phân tầng theo depot); MDE 6 điểm (859 yc/nhóm, m ≥ 299 yc/người; chấp nhận power 0,64 ở mức 5 điểm); 3 luật dừng đủ NẾU–TRONG–THÌ–KHÔNG THÌ. | Xong, có bằng chứng | Giám đốc vận hành LogiX-VN |
+| 6 · Pilot plan | Chia ngẫu nhiên theo nhân viên (20 đối chứng + 20 can thiệp phân tầng theo depot); mở dần 4 → 10 → 20 người; MDE 6 điểm (~859 mẫu hiệu dụng/nhóm, 299 yc/người, thu thập tối thiểu 8 ngày + theo dõi mở lại 7 ngày; chấp nhận power 0,64 ở mức 5 điểm); luật dừng lệch 2 điểm từ bước 10 người, đánh giá chỉ số chính từ bước 20 người, ngưỡng 8.000 đ chỉ tính variable cost. | Xong, có bằng chứng | Giám đốc vận hành LogiX-VN |
 | 7 · Rủi ro kinh tế | Làm lại gấp đôi tăng chi phí **+51,8%** lên **6.787 đ** (`simulated`); xem lại 100% kéo dài ở `noi_dia` + `hang_nang` đẩy chi phí lên **11.743 đ = 0,98×** (hoặc **12.414 đ = 1,03×** với 15,3 phút làm lại thực tế, `simulated`). **Rủi ro chi phí cố định:** Khi quy mô nhỏ ở đầu pilot (rollout 0.10 chỉ 4 NV), chi phí cố định 40tr/tháng phân bổ lên tới **+11.852 đ/việc**, đẩy *fully loaded cost* vượt 15.000 đ (> 8.000 đ); **không kết luận** Agent có chi phí biến đổi cao vì hiện tượng này (ở quy mô đầy đủ chỉ +1.185 đ/việc, tổng **4.599 đ = 0,38×**, `simulated`). | Giả lập | PM trợ lý hoàn phí |
 
 **Đề xuất:** **Go có điều kiện** cho pilot phạm vi `noi_dia` + `hang_nang` (loại `quoc_te` 1,88× và `doi_tac` 0,85×). Các điều kiện kèm người phụ trách và mốc kiểm tra:

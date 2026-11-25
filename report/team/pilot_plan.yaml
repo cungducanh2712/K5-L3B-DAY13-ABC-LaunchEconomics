@@ -7,7 +7,7 @@
 #   b) Theo nhân viên, m = 75: DE = 2,48; 3.103 mỗi nhóm -> cần 42 người/nhóm (tổng 84 > 40: không đủ người)
 #   c) 20 nhân viên mỗi nhóm: giới hạn c/ICC = 20/0,02 = tối đa 1.000 < 1.251 (không đạt mức chênh 5 điểm)
 #   d) 6 depot mỗi nhóm: giới hạn 6/0,02 = tối đa 300 (loại)
-#   e) Mức chênh 6 điểm (859 mỗi nhóm), 20 nhân viên mỗi nhóm: m >= 299 yêu cầu/người (DE = 6,96)
+#   e) Mức chênh 6 điểm (859 mỗi nhóm), 20 nhân viên mỗi nhóm: m >= 299 yêu cầu/người (DE = 6,96); 1.500 yc/ngày / 40 nhân viên = 37,5 yc/người/ngày -> thu thập tối thiểu 8 ngày, vẫn theo dõi mở lại 7 ngày cho từng đơn.
 #
 # D2 · Năm câu kiểm tra "tách được tác động" với cách chia đã chọn (mỗi câu một dòng):
 #   1. Đối chứng chạy cùng thời gian: Có, 20 nhân viên đối chứng làm cùng tuần, cùng depot.
@@ -27,7 +27,7 @@ pilot:
     unit: "staff"
     control_share: 0.5
     randomized: true
-  rollout: [0.10, 0.25, 0.50]     # 4 -> 10 -> 20 nhân viên; chỉ đo chỉ số chính từ bước 0.50
+  rollout: [0.10, 0.25, 0.50]     # mở dần 4 -> 10 -> 20 người; áp dụng luật dừng lệch 2 điểm từ bước 10 người; chỉ đánh giá primary metric từ bước 20 người
   primary_metric:
     name: dong_trong_24h_khong_mo_lai_7_ngay
     baseline: 0.70
@@ -37,15 +37,18 @@ pilot:
     n_per_arm: 859
     design_effect: 6.96
     clusters_per_arm: 20
+    min_requests_per_staff: 299
+    min_collection_days: 8        # theo giả định lưu lượng 1.500 yc/ngày (37,5 yc/người/ngày)
+    reopen_window_days: 7         # vẫn theo dõi mở lại 7 ngày cho từng đơn
   identifiability:
     concurrent_control: "20 nhân viên đối chứng làm việc cùng tuần tại cùng depot"
     spillover_risk: "Chia sẻ gợi ý giữa nhân viên cùng depot; giảm bằng phân quyền theo staff_id và ghi log lượt mở"
     predeclared: "Chỉ số chính, ngưỡng 6 điểm, luật dừng và ngày quyết định chốt trước ngày chạy"
   stop_rules:
-    - "NẾU tỉ lệ mở lại 7 ngày của nhóm trợ lý cao hơn đối chứng >= 2 điểm hoặc vượt 6%, hoặc có >= 1 ca hoàn trùng TRONG 3 ngày liên tiếp THÌ Giám đốc vận hành tắt trợ lý trong 30 phút KHÔNG THÌ không được sang bước rollout tiếp"
-    - "NẾU chi phí mỗi việc thành công > 8.000 đ (simulated) TRONG 2 tuần liên tiếp THÌ PM thu hẹp về noi_dia và giới hạn 2 lần chạy KHÔNG THÌ không được mở rộng hang_nang"
+    - "NẾU từ bước 10 người (0.25) tỉ lệ mở lại 7 ngày (theo dõi đủ 7 ngày cho từng đơn) của nhóm trợ lý cao hơn đối chứng >= 2 điểm hoặc vượt 6%, hoặc có >= 1 ca hoàn trùng TRONG 3 ngày liên tiếp THÌ Giám đốc vận hành tắt trợ lý trong 30 phút KHÔNG THÌ không được sang bước rollout 20 người"
+    - "NẾU chi phí biến đổi (variable cost, không cộng 40 triệu đ cố định) mỗi việc thành công > 8.000 đ (simulated) TRONG 2 tuần liên tiếp THÌ PM thu hẹp về noi_dia và giới hạn 2 lần chạy KHÔNG THÌ không được mở rộng hang_nang"
     - "NẾU tỉ lệ bỏ qua gợi ý > 40% TRONG 1 tuần THÌ Trưởng nhóm CSKH phỏng vấn 5 nhân viên trong 3 ngày KHÔNG THÌ không được chuyển bước rollout"
-  interim_looks: "chỉ kiểm tra chỉ số an toàn"
+  interim_looks: "chỉ kiểm tra chỉ số an toàn (áp dụng luật dừng lệch 2 điểm từ bước 10 người); chỉ đánh giá primary metric từ bước 20 người"
   rollback: "Giám đốc vận hành bấm cờ tắt, hiệu lực trong 30 phút; khách được phục vụ bằng luồng nhân viên tự làm"
   decision_date: "2027-01-05"
   simulated_inputs:
