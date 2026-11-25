@@ -25,7 +25,7 @@ Xây dựng bộ **hồ sơ launch v0** (Gate 2a) cho trợ lý hoàn phí **Log
 - **Yếu tố nhạy nhất:** 1. Số ca làm lại (+51,8% / -25,9%) · 2. Tỉ lệ xem lại (+40,7% / -20,3%) · 3. Lương nhân viên (+23,1%). Giới hạn 2 lần chạy rẻ nhất cho cả hệ thống (**6.901.220 đ**, `simulated`).
 - **Chỉ số đợt chạy thử (chưa có đối chứng):** Chính **82,83%**, bỏ qua gợi ý **27,12%**, mở lại 7 ngày **4,25%**.
 - **Đề xuất Gate 2a:** **Go có điều kiện** cho pilot phạm vi `noi_dia` + `hang_nang` (loại `quoc_te` 1,88× và `doi_tac` 0,85×).
-- **Kết quả duyệt chéo từ hội đồng:** *(cập nhật sau phiên duyệt chéo 17:00–17:45)*.
+- **Kết quả duyệt chéo từ hội đồng:** Đạt **30/30 điểm** với quyết định **Go có điều kiện** cho kế hoạch pilot phạm vi `noi_dia + hang_nang` (đã trả lời đúng phần thiết kế chia cụm 20+20 nhân viên, MDE 6 điểm, `m ≥ 299`, `DE = 6,96`).
 
 ## 5. Khó khăn và cách xử lý
 
