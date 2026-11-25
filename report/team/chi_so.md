@@ -7,10 +7,10 @@
 | Chính (kết quả) | % yêu cầu đóng trong 24 giờ và không mở lại trong 7 ngày | `dong_trong_24h` bằng 1 và `mo_lai_trong_7_ngay` bằng 0, chia tổng số yêu cầu | **82,83% (994/1.200)** *(phạm vi `noi_dia` + `hang_nang`: 92,26%, 906/982)* |
 | Dùng | Tỉ lệ bỏ qua gợi ý | `quyet_dinh_xem_lai` là `sua` hoặc `bo`, chia số yêu cầu được xem lại (`duoc_xem_lai == 1`) | **27,12% (48/177)** *(phạm vi `noi_dia` + `hang_nang`: 21,09%, 27/128)* |
 | An toàn | Tỉ lệ lỗi lọt đến khách | `mo_lai_trong_7_ngay` bằng 1, chia tổng số yêu cầu | **4,25% (51/1.200)** *(phạm vi `noi_dia` + `hang_nang`: 3,97%, 39/982)* |
-| Dùng | Nhóm tự đề xuất: Tỉ lệ yêu cầu nhóm can thiệp mở xem gợi ý trợ lý | Số yêu cầu có `agent_suggestion_shown` chia số `refund_request_created` ở `arm = treatment` | Không cần tính |
-| An toàn | Nhóm tự đề xuất: Tỉ lệ đơn hoàn sai số tiền hoặc sai chính sách qua kiểm tra mẫu hằng tuần | Số ca có `so_tien_da_hoan != so_tien_dung` chia tổng số ca `audit_sample_checked` (bắt lỗi ngầm như ca 5, 17) | Không cần tính |
+| Dùng | Nhóm tự đề xuất: % yêu cầu nhóm can thiệp được mở xem bằng trợ lý | Số yêu cầu có event `agent_suggestion_shown` chia tổng số yêu cầu của nhóm can thiệp (`arm = treatment`) | Không cần tính |
+| An toàn | Nhóm tự đề xuất: % đơn hoàn sai số tiền qua kiểm tra mẫu hằng tuần | Số đơn lệch tiền trong `audit_sample_checked` chia tổng số đơn mẫu kiểm tra (bắt lỗi ngầm như ca 5, 17) | Không cần tính |
 
-**Lưu ý diễn giải:** Chỉ số trong đợt chạy thử là **82,83%** trên toàn mẫu (**92,26%** trong phạm vi `noi_dia` + `hang_nang`), **không** viết "trợ lý đã nâng chỉ số" vì đợt chạy thử không có nhóm đối chứng.
+**Lưu ý diễn giải:** Chỉ số trong đợt chạy thử là **82,83%** trên toàn mẫu (**92,26%** trong phạm vi `noi_dia` + `hang_nang`), **không viết** "trợ lý đã nâng chỉ số" vì đợt chạy thử không có nhóm đối chứng.
 
 ## Danh sách event
 
@@ -18,23 +18,23 @@ Mười event cốt lõi cần ghi nhận trong giai đoạn pilot, mỗi event 
 
 | Event | Ai tạo | Thuộc tính chính | Thời điểm |
 | --- | --- | --- | --- |
-| `refund_request_created` | App khách | `request_id, loai, so_tien, arm, trace_id` | Khi khách gửi yêu cầu hoàn phí |
-| `agent_run_completed` | Agent | `attempt, tokens_in, tokens_out, tool_calls, status, trace_id` | Sau mỗi lần chạy, kể cả lần lỗi |
-| `agent_suggestion_shown` | Giao diện nhân viên | `staff_id, so_tien_de_xuat, trace_id` | Khi gợi ý của trợ lý hiện ra |
-| `staff_review_decision` | Nhân viên | `quyet_dinh (giu/sua/bo), phut_xem_lai (đo thật), trace_id` | Khi nhân viên bấm giữ, sửa hoặc bỏ |
-| `staff_rework_completed` | Nhân viên | `phut_lam_lai (đo thật), ly_do, trace_id` | Khi nhân viên làm lại xong ca lỗi |
-| `refund_ledger_write` | Dịch vụ sổ cái | `idempotency_key, so_tien, ket_qua, trace_id` | Khi ghi giao dịch hoàn tiền vào sổ cái |
-| `handoff_to_staff` | Agent | `reason, tom_tat, trace_id` | Khi chuyển yêu cầu sang nhân viên |
-| `ticket_closed` | Hệ thống ticket | `closed_at, trace_id` | Khi đóng yêu cầu hoàn phí |
-| `ticket_reopened` | Khách | `reopened_at, reason, trace_id` | Khi khách mở lại yêu cầu trong 7 ngày |
-| `audit_sample_checked` | Kế toán | `so_tien_da_hoan, so_tien_dung, trace_id` | Kiểm tra mẫu ngẫu nhiên hằng tuần |
+| `refund_request_created` | App khách | `request_id`, `loai`, `so_tien_vnd`, `arm`, `trace_id` | Khi khách gửi yêu cầu hoàn phí |
+| `agent_run_completed` | Agent | `attempt`, `tokens_in`, `tokens_out`, `tool_calls`, `status`, `trace_id` | Sau mỗi lần chạy, kể cả lần lỗi |
+| `agent_suggestion_shown` | Giao diện nhân viên | `staff_id`, `so_tien_de_xuat`, `trace_id` | Khi gợi ý của trợ lý hiện ra |
+| `staff_review_decision` | Nhân viên | `quyet_dinh` (`giu`/`sua`/`bo`), `phut_xem_lai` (đo thật), `trace_id` | Khi nhân viên bấm giữ, sửa hoặc bỏ |
+| `staff_rework_completed` | Nhân viên | `phut_lam_lai` (đo thật), `ly_do`, `trace_id` | Khi nhân viên làm lại xong ca lỗi |
+| `refund_ledger_write` | Dịch vụ sổ cái | `idempotency_key`, `so_tien`, `ket_qua`, `trace_id` | Khi ghi giao dịch hoàn tiền vào sổ cái |
+| `handoff_to_staff` | Agent | `reason`, `tom_tat`, `trace_id` | Khi chuyển yêu cầu sang nhân viên |
+| `ticket_closed` | Hệ thống ticket | `closed_at`, `trace_id` | Khi đóng yêu cầu hoàn phí |
+| `ticket_reopened` | Khách | `reopened_at`, `reason`, `trace_id` | Khi khách mở lại yêu cầu trong 7 ngày |
+| `audit_sample_checked` | Kế toán | `so_tien_da_hoan`, `so_tien_dung`, `trace_id` | Kiểm tra mẫu ngẫu nhiên hằng tuần |
 
 **Kiểm tra chéo:** với mỗi chỉ số ở bảng E1, ghi event dùng để tính. Chỉ số nào không tính được từ danh sách event thì chưa đo được.
 
 - **Chỉ số chính (% đóng trong 24h và không mở lại 7 ngày):** Nối theo `trace_id` giữa `refund_request_created`, `ticket_closed` (`closed_at - created_at <= 24h`) và không phát sinh `ticket_reopened` trong 7 ngày → **đo được**.
-- **Chỉ số dùng (Tỉ lệ bỏ qua gợi ý):** Đếm `staff_review_decision` có `quyet_dinh` thuộc `{sua, bo}` chia tổng số `agent_suggestion_shown` (nối theo `trace_id`) → **đo được**.
-- **Chỉ số an toàn (Tỉ lệ lỗi lọt đến khách):** Đếm `ticket_reopened` trong 7 ngày chia tổng `refund_request_created` (nối theo `trace_id`) → **đo được**.
+- **Chỉ số dùng (% bỏ qua gợi ý):** Đếm `staff_review_decision` có `quyet_dinh` thuộc `{sua, bo}` chia tổng số `agent_suggestion_shown` (nối theo `trace_id`) → **đo được**.
 - **Chỉ số dùng tự đề xuất (% mở xem trợ lý ở nhóm can thiệp):** Đếm `agent_suggestion_shown` chia `refund_request_created` lọc theo `arm = treatment` (nối theo `trace_id`) → **đo được**.
+- **Chỉ số an toàn (% mở lại trong 7 ngày):** Đếm `ticket_reopened` trong 7 ngày chia tổng `refund_request_created` (nối theo `trace_id`) → **đo được**.
 - **Chỉ số an toàn tự đề xuất (% hoàn sai tiền qua kiểm tra mẫu):** Đếm `audit_sample_checked` có `so_tien_da_hoan != so_tien_dung` chia tổng số `audit_sample_checked` → **đo được**.
 
 ## E2 · Rủi ro kinh tế
