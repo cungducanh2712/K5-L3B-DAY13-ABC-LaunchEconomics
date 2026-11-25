@@ -18,6 +18,7 @@
 - Cài đặt các hàm `so_lan_chay_ky_vong`, `ti_le_thanh_cong`, `he_so_chi_phi_moi_viec_thanh_cong`, `kiem_tra_dap_an_biet_truoc` và `mo_hinh` trong `src/economics.py`.
 - Tính toán chi phí từ `logix_runs.csv` và `logix_requests.csv`: tổng chi phí 4.373.585 đ (`simulated`), chi phí mỗi việc thành công 4.472 đ (`simulated`), gấp 16,28 lần hóa đơn token+tool chia số yêu cầu (275 đ).
 - Tách chi phí theo 4 loại yêu cầu (`noi_dia` 2.696 đ, `hang_nang` 8.221 đ, `doi_tac` 10.215 đ, `quoc_te` 22.515 đ — không đáng xử lý) và tính chi phí cố định 40 triệu đ/tháng cho phạm vi `noi_dia` + `hang_nang`.
+- Cập nhật A4 theo hướng dẫn Lab Coach (`slide-d1-ba-cach-chia.html`): tách **Variable cost** (3.414 đ/việc, `simulated`), **Fixed cost** phân bổ và **Fully loaded cost** theo quy mô 4, 10, 20, 40 nhân viên; bổ sung kiểm thử quy tắc ngưỡng dừng 8.000 đ chỉ áp dụng cho variable cost.
 - Chạy 9 kịch bản độ nhạy (B1), kịch bản kết hợp (B2), giới hạn chạy lại 1–3 lần (B3) và kịch bản xem lại 100% (B4: 12.962 đ/việc, `simulated`).
 
 ## 4. Bằng chứng
