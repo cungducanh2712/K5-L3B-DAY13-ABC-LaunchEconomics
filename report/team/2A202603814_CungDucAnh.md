@@ -27,7 +27,7 @@
 
 - **Công cụ:** Trợ lý AI trong IDE (Antigravity).
 - **Mục đích sử dụng:** Giải thích công thức cỡ mẫu cụm (DE, ICC), gợi ý viết code cho `src/lab13.py`, soát lỗi logic khi giới hạn `max_lan_chay`, và rà soát checklist/rubric trước khi commit.
-- **Cách tự kiểm tra:** Tự đối chiếu từng con số đầu ra của `src/lab13.py` với tài liệu `docs/Lab13_Huong_dan_chi_tiet_buoi_chieu.md` (sai số 0%), kiểm tra tay công thức A1/A2/B3, và chạy kiểm tra `yaml.safe_load` + tìm từ cấm `"production"`.
+- **Cách tự kiểm tra:** Tự đối chiếu từng con số đầu ra của `src/lab13.py` với tài liệu `docs/Lab13_Huong_dan_chi_tiet_buoi_chieu.md` (sai số 0%), kiểm tra tay công thức A1/A2/B3, và chạy kiểm tra `yaml.safe_load` + rà soát không dùng từ cấm về chạy chính thức trong hồ sơ.
 
 ## 6. Tự đánh giá
 
