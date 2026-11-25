@@ -4,7 +4,10 @@ Không cần khoá API. Điền các chỗ ghi VIẾT Ở ĐÂY (đánh dấu TO
 Bản gốc chưa sửa nằm ở lab13_starter.py.
 """
 import math
+from statistics import NormalDist
 import pandas as pd
+from statsmodels.stats.proportion import proportion_effectsize
+from statsmodels.stats.power import NormalIndPower
 
 # Bảng giá GIẢ ĐỊNH của lab (không phải giá thật của nhà cung cấp nào)
 GIA_VAO = 26        # đồng cho 1.000 token đầu vào
@@ -161,5 +164,47 @@ if __name__ == '__main__':
         hoa_von = (kq_pv['thanh_cong'] * BASELINE - tien_ll - hoa_don_pv) / (yc_co_ok * LUONG_PHUT)
         print(f'{nhan:22s} tong={tong_b4:>10,.0f} cps={cps_b4:>6,.0f} ({cps_b4 / BASELINE:.2f}x) hoa_von<= {hoa_von:.1f} phut')
     # TODO CP4 · Nhiệm vụ D: cỡ mẫu.
-    #   from statsmodels.stats.proportion import proportion_effectsize
-    #   from statsmodels.stats.power import NormalIndPower
+    def co_mau(p1, p2, alpha=0.05, power=0.8):
+        za = NormalDist().inv_cdf(1 - alpha / 2)
+        zb = NormalDist().inv_cdf(power)
+        pb = (p1 + p2) / 2
+        return math.ceil((za * math.sqrt(2 * pb * (1 - pb))
+                          + zb * math.sqrt(p1 * (1 - p1) + p2 * (1 - p2))) ** 2 / (p2 - p1) ** 2)
+
+    print('\n=== D1 (Co mau pilot, baseline=0.70, alpha=0.05, power=0.80, ICC=0.02) ===')
+    icc = 0.02
+    n_req = co_mau(0.70, 0.75)
+    de_75 = 1 + (75 - 1) * icc
+    n_staff_75 = math.ceil(n_req * de_75)
+    so_nv_can = math.ceil(n_staff_75 / 75)
+    cap_20_nv = int(20 / icc)
+    cap_6_depot = int(6 / icc)
+    n_mde6 = co_mau(0.70, 0.76)
+    m_min_20nv = math.ceil(n_mde6 * (1 - icc) / (20 - n_mde6 * icc))
+    de_mde6 = 1 + (m_min_20nv - 1) * icc
+    power_5pt_at_859 = NormalIndPower().power(
+        effect_size=proportion_effectsize(0.75, 0.70),
+        nobs1=n_mde6,
+        alpha=0.05,
+        ratio=1.0,
+    )
+    print(f'a) Theo yeu cau (+5 diem):       {n_req:,} yc/nhom')
+    print(f'b) Theo nhan vien (m=75):        DE={de_75:.2f}, n={n_staff_75:,}/nhom -> {so_nv_can} nv/nhom (tong {so_nv_can*2} > 40)')
+    print(f'c) 20 nhan vien/nhom (c/ICC):    toi da {cap_20_nv:,} < {n_req:,} (khong dat 5 diem)')
+    print(f'd) 6 depot/nhom (c/ICC):         toi da {cap_6_depot:,} (loai)')
+    print(f'e) Muc chenh 6 diem (n={n_mde6}):   m >= {m_min_20nv} yc/nguoi, DE={de_mde6:.2f}; power neu chenh 5 diem={power_5pt_at_859:.2f}')
+
+    print('\n=== D3 (Ti le mo lai trong 7 ngay hien tai) ===')
+    mo_lai_all = reqs['mo_lai_trong_7_ngay'].mean()
+    mo_lai_pv = sub_pv['mo_lai_trong_7_ngay'].mean()
+    print(f'Toan bo (1.200 yc):      {mo_lai_all*100:.2f}% ({int(reqs["mo_lai_trong_7_ngay"].sum())}/{len(reqs)})')
+    print(f'Pham vi pilot ({len(sub_pv)} yc): {mo_lai_pv*100:.2f}% ({int(sub_pv["mo_lai_trong_7_ngay"].sum())}/{len(sub_pv)})')
+
+    print('\n=== E1 (3 chi so tren 1.200 yeu cau) ===')
+    cs_chinh = ((reqs['dong_trong_24h'] == 1) & (reqs['mo_lai_trong_7_ngay'] == 0)).mean()
+    xem_df = reqs[reqs['duoc_xem_lai'] == 1]
+    cs_dung = xem_df['quyet_dinh_xem_lai'].isin(['sua', 'bo']).mean()
+    cs_an_toan = (reqs['mo_lai_trong_7_ngay'] == 1).mean()
+    print(f'Chinh (dong 24h, khong mo lai 7n): {cs_chinh*100:.2f}% ({int(((reqs["dong_trong_24h"] == 1) & (reqs["mo_lai_trong_7_ngay"] == 0)).sum())}/{len(reqs)})')
+    print(f'Dung (bo qua goi y sua+bo):        {cs_dung*100:.2f}% ({int(xem_df["quyet_dinh_xem_lai"].isin(["sua", "bo"]).sum())}/{len(xem_df)})')
+    print(f'An toan (mo lai trong 7 ngay):     {cs_an_toan*100:.2f}% ({int((reqs["mo_lai_trong_7_ngay"] == 1).sum())}/{len(reqs)})')
