@@ -47,6 +47,20 @@ Số tính bằng `src/lab13.py`. Mọi con số tính từ cột `_simulated` g
 
 - Chi phí cố định có đổi kết luận không? Ở khối lượng nào? Ở quy mô đầy đủ (45.000 yc/tháng), kết luận không đổi (**4.599 đ = 0,38×** [simulated]). Khi khối lượng giảm một nửa (22.500 yc/tháng), phần cố định tăng gấp đôi lên **2.370 đ/việc** (tổng **5.784 đ = 0,48×** [simulated]), nên hồ sơ phải ghi rõ khối lượng đi kèm.
 
+### Bổ sung theo hướng dẫn Lab Coach (`slide-d1-ba-cach-chia.html`)
+
+Phân biệt **Variable cost** (token + tool + review + rework trên mỗi việc thành công = **3.414 đ** [simulated]), **Fixed cost** (40.000.000 đ/tháng) và **Fully loaded cost** (Variable + Fixed phân bổ) cho phạm vi `noi_dia` + `hang_nang` (tỉ lệ phạm vi 81,83%, tỉ lệ thành công 91,65% trên tổng 40 nhân viên / 45.000 yc/tháng):
+
+| Số nhân viên | Việc thành công/tháng | Variable cost [simulated] | Fixed cost phân bổ | Fully loaded cost [simulated] | Kích hoạt ngưỡng 8.000 đ? |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 4 | 3.375 | 3.414 đ | 11.852 đ | 15.266 đ | Không (Variable < 8.000 đ) |
+| 10 | 8.438 | 3.414 đ | 4.741 đ | 8.155 đ | Không (Variable < 8.000 đ) |
+| 20 | 16.875 | 3.414 đ | 2.370 đ | 5.784 đ | Không (Variable < 8.000 đ) |
+| 40 | 33.750 | 3.414 đ | 1.185 đ | 4.599 đ | Không (Variable < 8.000 đ) |
+
+- **Nguyên tắc ngưỡng 8.000 đ**: Chỉ áp dụng cho **variable cost** (3.414 đ [simulated]), **không** dùng fully loaded cost.
+- **Rủi ro chi phí cố định ở quy mô nhỏ**: Tại bước 4 người (15.266 đ/việc [simulated] > 12.000 đ), chi phí cao là do 40 triệu đ/tháng chia cho ít việc (3.375 việc), cần xem xét lại hợp đồng hoặc quy mô sử dụng, không kết luận agent vận hành đắt.
+
 ## B1 · Đổi từng yếu tố
 
 | Kịch bản | Cách tính | Chi phí mỗi việc thành công | Thay đổi (%) |

@@ -10,6 +10,9 @@ GIA_TOOL = 15       # đồng cho 1 lần gọi tool
 LUONG_PHUT = 2000   # đồng cho 1 phút của nhân viên
 BASELINE = 12000    # đồng cho 1 yêu cầu khi nhân viên tự làm (6 phút)
 CHI_PHI_CO_DINH = 40_000_000  # đồng / tháng
+TONG_NHAN_VIEN = 40
+VOL_THANG = 45_000
+NGUONG_DUNG_CHI_PHI = 8_000
 
 
 # ---------- Nhiệm vụ A1 · Kinh tế của việc chạy lại ----------
@@ -78,6 +81,57 @@ def _loc_theo_loai(runs, reqs, loai_list):
     return r, q
 
 
+def tinh_chi_phi_theo_quy_mo(variable_cost, so_nv, ti_le_pham_vi, ti_le_tc,
+                             tong_nv=TONG_NHAN_VIEN, vol_thang=VOL_THANG,
+                             chi_phi_co_dinh=CHI_PHI_CO_DINH):
+    """Phân bổ chi phí cố định theo số việc thành công ở quy mô so_nv nhân viên."""
+    yc_pham_vi = vol_thang * (so_nv / tong_nv) * ti_le_pham_vi
+    tc_thang = yc_pham_vi * ti_le_tc
+    fixed_moi_viec = chi_phi_co_dinh / tc_thang if tc_thang > 0 else float('inf')
+    fully_loaded = variable_cost + fixed_moi_viec
+    return {
+        'so_nv': so_nv,
+        'yc_pham_vi': yc_pham_vi,
+        'tc_thang': tc_thang,
+        'variable_cost': variable_cost,
+        'fixed_moi_viec': fixed_moi_viec,
+        'fully_loaded': fully_loaded,
+    }
+
+
+def kiem_tra_nguong_dung_chi_phi(variable_cost, nguong=NGUONG_DUNG_CHI_PHI):
+    """Luật thu hẹp/dừng chi phí (> 8.000 đ) chỉ áp dụng cho variable cost."""
+    return variable_cost > nguong
+
+
+def kiem_tra_bo_sung_coach(variable_cost, ti_le_pham_vi, ti_le_tc):
+    """Kiểm thử bổ sung theo hướng dẫn Lab Coach (CP2)."""
+    ds_quy_mo = [tinh_chi_phi_theo_quy_mo(variable_cost, nv, ti_le_pham_vi, ti_le_tc)
+                 for nv in (4, 10, 20, 40)]
+
+    # 1. Tổng chi phí đầy đủ = variable + fixed phân bổ
+    for m in ds_quy_mo:
+        assert abs(m['fully_loaded'] - (m['variable_cost'] + m['fixed_moi_viec'])) < 1e-6
+
+    # 2. Fixed cost phân bổ giảm khi số việc thành công tăng
+    for i in range(len(ds_quy_mo) - 1):
+        assert ds_quy_mo[i]['tc_thang'] < ds_quy_mo[i + 1]['tc_thang']
+        assert ds_quy_mo[i]['fixed_moi_viec'] > ds_quy_mo[i + 1]['fixed_moi_viec']
+
+    # 3. 4, 10, 20, 40 người: variable < 8.000 -> không kích hoạt luật dừng dù fully_loaded > 8.000
+    assert ds_quy_mo[0]['fully_loaded'] > NGUONG_DUNG_CHI_PHI  # 4 người > 8.000
+    assert ds_quy_mo[1]['fully_loaded'] > NGUONG_DUNG_CHI_PHI  # 10 người > 8.000
+    for m in ds_quy_mo:
+        assert m['variable_cost'] < NGUONG_DUNG_CHI_PHI
+        assert not kiem_tra_nguong_dung_chi_phi(m['variable_cost'])
+
+    # 4. Ngưỡng biên 8.500 (kích hoạt) và 8.000 (chưa vượt ngưỡng)
+    assert kiem_tra_nguong_dung_chi_phi(8500) is True
+    assert kiem_tra_nguong_dung_chi_phi(8000) is False
+    print('Kiểm thử bổ sung Lab Coach (A4 & ngưỡng 8.000 đ): ĐẠT')
+    return ds_quy_mo
+
+
 def chay_phan_tich(data_dir='.'):
     runs = pd.read_csv(os.path.join(data_dir, 'logix_runs.csv'))
     reqs = pd.read_csv(os.path.join(data_dir, 'logix_requests.csv'), keep_default_na=False)
@@ -113,12 +167,19 @@ def chay_phan_tich(data_dir='.'):
     k_nh = mo_hinh(r_nh, q_nh)
     ti_le_nh = len(q_nh) / len(reqs)
     ti_le_tc_nh = k_nh['thanh_cong'] / len(q_nh)
+    print(f'Variable cost (noi_dia + hang_nang): {k_nh["cps"]:,.2f} đ/việc')
     for vol in [45000, 22500]:
         yc_pham_vi = vol * ti_le_nh
         tc_thang = yc_pham_vi * ti_le_tc_nh
         co_dinh_moi_viec = CHI_PHI_CO_DINH / tc_thang
         tong_moi_viec = k_nh['cps'] + co_dinh_moi_viec
         print(f'vol={vol:5d} | yc_pv={yc_pham_vi:7,.0f} | tc={tc_thang:7,.0f} | fixed/tc={co_dinh_moi_viec:6,.0f} | total_cps={tong_moi_viec:7,.0f} | vs 12k: {tong_moi_viec-BASELINE:+,.0f}')
+
+    print('\n=== A4 (BỔ SUNG): PHÂN BỔ THEO QUY MÔ 4, 10, 20, 40 NHÂN VIÊN ===')
+    ds_quy_mo = kiem_tra_bo_sung_coach(k_nh['cps'], ti_le_nh, ti_le_tc_nh)
+    for m in ds_quy_mo:
+        kich_hoat = kiem_tra_nguong_dung_chi_phi(m['variable_cost'])
+        print(f'nv={m["so_nv"]:2d} | tc/thang={m["tc_thang"]:7,.0f} | var={m["variable_cost"]:6,.0f} | fixed={m["fixed_moi_viec"]:6,.0f} | full={m["fully_loaded"]:6,.0f} | dung_8k={kich_hoat}')
 
     print('\n=== B1: ĐỘ NHẠY TỪNG YẾU TỐ ===')
     base_cps = kq['cps']
